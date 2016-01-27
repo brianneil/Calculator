@@ -16,6 +16,19 @@ class CalculatorViewController: UIViewController
     var userIsInTheMiddleOfTypingANumber = false
     
     var brain = CalculatorBrain()
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let CGVC = segue.destinationViewController as? CalculatorGraphViewController {        //First check that we are in fact headed to a CalculatorViewController
+            if let identifier = segue.identifier {                                          //Run a switch on what triggered the segue and react appropriately
+                switch identifier {
+                case "MakeGraph":
+                    print("I was about to graph some stuff")
+                    //Set up the bounds, origin, and points per unit
+                default: break
+                }
+            }
+        }
+    }
 
     
     @IBAction func assignM(sender: UIButton) {
