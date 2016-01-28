@@ -348,6 +348,7 @@
         <!--Calculator Graph View Controller-->
         <scene sceneID="Iof-Jz-lgs">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Anp-Bd-fUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Tns-h6-GgI" customClass="CalculatorGraphViewController" customModule="Calculator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PE1-mH-Fj3"/>
@@ -360,6 +361,7 @@
                             <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ROr-0s-Ezy" customClass="GraphView" customModule="Calculator" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="600" height="572"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -370,8 +372,10 @@
                             <constraint firstItem="ROr-0s-Ezy" firstAttribute="leading" secondItem="VVe-lZ-PaH" secondAttribute="leading" id="tBd-tD-YV2"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="GraphViewOutlet" destination="ROr-0s-Ezy" id="eqT-rv-U3E"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Anp-Bd-fUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="448" y="793"/>
         </scene>

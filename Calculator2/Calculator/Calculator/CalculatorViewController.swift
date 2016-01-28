@@ -22,8 +22,24 @@ class CalculatorViewController: UIViewController
             if let identifier = segue.identifier {                                          //Run a switch on what triggered the segue and react appropriately
                 switch identifier {
                 case "MakeGraph":
-                    print("I was about to graph some stuff")
-                    //Set up the bounds, origin, and points per unit
+                    var lastOp = ""  //This will keep track of the last operation so we can hold onto it after we see M
+                    if let list = brain.program as? Array<String> { //confirms that it is an array of strings
+                        for op in list {
+                            if op == "M" {break}
+                            else {
+                                lastOp = op
+                            }
+                        }
+                        switch lastOp {
+                        case "sin":
+                            CGVC.createPlotPoints({sin($0)}, label: lastOp)
+                        case "cos":
+                            CGVC.createPlotPoints({cos($0)}, label: lastOp)
+                        case "√":
+                            CGVC.createPlotPoints({sqrt($0)}, label: lastOp)
+                        default: break
+                        }
+                    }
                 default: break
                 }
             }
