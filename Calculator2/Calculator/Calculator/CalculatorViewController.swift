@@ -23,22 +23,18 @@ class CalculatorViewController: UIViewController
                 switch identifier {
                 case "MakeGraph":
                     var lastOp = ""  //This will keep track of the last operation so we can hold onto it after we see M
+                    var operation = "" //This will store the operation when we find it
                     if let list = brain.program as? Array<String> { //confirms that it is an array of strings
                         for op in list {
-                            if op == "M" {break}
+                            if lastOp == "M" {
+                                operation = op //grab op and jump out
+                                break
+                            }
                             else {
                                 lastOp = op
                             }
                         }
-                        switch lastOp {
-                        case "sin":
-                            CGVC.createPlotPoints({sin($0)}, label: lastOp)
-                        case "cos":
-                            CGVC.createPlotPoints({cos($0)}, label: lastOp)
-                        case "√":
-                            CGVC.createPlotPoints({sqrt($0)}, label: lastOp)
-                        default: break
-                        }
+                        CGVC.functionString = operation
                     }
                 default: break
                 }

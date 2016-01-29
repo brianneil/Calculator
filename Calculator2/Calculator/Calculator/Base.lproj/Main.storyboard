@@ -348,7 +348,6 @@
         <!--Calculator Graph View Controller-->
         <scene sceneID="Iof-Jz-lgs">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Anp-Bd-fUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Tns-h6-GgI" customClass="CalculatorGraphViewController" customModule="Calculator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PE1-mH-Fj3"/>
@@ -376,6 +375,7 @@
                         <outlet property="GraphViewOutlet" destination="ROr-0s-Ezy" id="eqT-rv-U3E"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Anp-Bd-fUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="448" y="793"/>
         </scene>

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol GraphViewDataSource: class {
-    func pointsForGraphView(sender: GraphView) -> ([CGFloat?], [CGFloat?])
+    func pointsForGraphView(sender: GraphView) -> ([CGFloat?])
 }
 
 @IBDesignable
@@ -19,6 +19,10 @@ class GraphView: UIView {
     
     @IBInspectable
     var pointsPerUnit: CGFloat = 100 { didSet {setNeedsDisplay() } }
+    
+    var lineWidth:CGFloat = 4 { didSet { setNeedsDisplay() } }
+    
+    var color:UIColor = UIColor.orangeColor() { didSet { setNeedsDisplay() } }
     
     var axesOrigin: CGPoint = CGPointMake(CGFloat(0.0), CGFloat(0.0)) {
         didSet {
@@ -35,6 +39,8 @@ class GraphView: UIView {
     private enum Constants {
         static let translationFactor: CGFloat = 2
     }
+    
+    //I need some kind of init here to set origin and bounds, otherwise I can't get the right values into the view controller.
     
     
     func zoom(gesture: UIPinchGestureRecognizer){
@@ -64,6 +70,38 @@ class GraphView: UIView {
         }
     }
     
+    func createCurveBezier(yVals: ([CGFloat?])) -> UIBezierPath {
+        let curvePath = UIBezierPath()
+        var lastGood = false
+        
+        var xPixel:CGFloat = 0
+        
+        for y in yVals{
+            if lastGood == false {  //The previous point was bad
+                if y != nil {       //This point is good
+                    lastGood = true //Set this for the next loop
+                    let point = CGPointMake(xPixel, y!)
+                    curvePath.moveToPoint(point)
+                }    //otherwise, do nothing, just keep moving across x's
+            } else {        //the previous point was good
+                if y != nil     //This point is good
+                {
+                    lastGood = true
+                    let point = CGPointMake(xPixel, y!)
+                    curvePath.addLineToPoint(point)     //Draw from where we were to here
+                    curvePath.moveToPoint(point)        //Move to the new spot
+                } else
+                {
+                    lastGood = false
+                }
+            }
+        xPixel++
+        
+        }
+       return curvePath
+        
+    }
+    
     func jumpOrigin(gesture: UITapGestureRecognizer) {
         gesture.numberOfTapsRequired = 2        //Requires a double tap
         switch gesture.state {
@@ -88,12 +126,8 @@ class GraphView: UIView {
         
         
         axes.drawAxesInRect(axesBounds, origin: axesOrigin, pointsPerUnit: pointsPerUnit)       //This will draw a blank graph
-        
-//        let graphablePixels: (xPixels: [Double], yPixels: [Double]) = (dataSource?.pointsForGraphView(self))! ?? ([0.0],[0.0])
-        
-//        for xPosition in graphablePixels.xPixels {
-            
-//        }
-//    }
+        let yValues = dataSource?.pointsForGraphView(self) ?? [nil]          //Grab data
+        let bezPath = createCurveBezier(yValues)    //Create the path
+        bezPath.stroke()    //Draw!
     }
 }
