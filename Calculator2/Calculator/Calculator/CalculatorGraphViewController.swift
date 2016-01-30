@@ -16,71 +16,55 @@ class CalculatorGraphViewController: UIViewController, GraphViewDataSource {
             GraphViewOutlet.addGestureRecognizer(UIPinchGestureRecognizer(target: GraphViewOutlet, action: "zoom:"))
             GraphViewOutlet.addGestureRecognizer(UIPanGestureRecognizer(target: GraphViewOutlet, action: "slideOrigin:"))
             GraphViewOutlet.addGestureRecognizer(UITapGestureRecognizer(target: GraphViewOutlet, action: "jumpOrigin:"))
-            SetFunction(functionString)
         }
     }
     
-    //The model
-    var numericData: ([CGFloat?]) = ([nil]) {      //A tuple of the data set. This will contain the points to plot on the graph
-        didSet {
-            updateUI()
-        }
-    }
-    
+
     var functionString = ""
     
-    func SetFunction (operation: String) {
+    func RunFunction (operation: String, value: Double) -> Double?{        //Takes in the string of the function. If recognized, runs the function, else returns nil
         switch operation {
         case "sin":
-            createPlotPoints({sin($0)}, label: operation)
+            return sin(value)
         case "cos":
-            createPlotPoints({cos($0)}, label: operation)
+            return cos(value)
         case "√":
-            createPlotPoints({sqrt($0)}, label: operation)
-        default: break
+            return sqrt(value)
+        default: return nil
         }
     }
     
-    func createPlotPoints (function: Double -> Double, label: String)    {
-        //This will take in the function and string from the calculatorBrain and execute the function over the graph boundaries. It will set numericData at the end so that it's property observer will call the updateUI function
+    func pointsForGraphView(sender: GraphView) -> (xValues: [CGFloat?], yValues: [CGFloat?]) {   //This is the model. It runs the function over the range of x's and returns the x and y values in pixels for graphing
+        let origin = sender.axesOrigin
         var numericX: CGFloat = 0
-        var pixelXMax: CGFloat         //The location of my X on the pixel system
-        var pixelX: CGFloat = 0
-        updateUI() //This is a shitty hack to get the origin to properly place itself
-        let origin = GraphViewOutlet.axesOrigin
-        var data: ([CGFloat?]) = ([nil])        //Start nil'd
+        var pixelX: CGFloat = 0 //The location of my X on the pixel system
+        let pPU = sender.pointsPerUnit
+        let scaleFactor = sender.contentScaleFactor
+        let originXPixels = origin.x * scaleFactor  //Go from points to pixels
+        let originYPixels = origin.y * scaleFactor  //Go from points to pixesls
+        let pixelXMax = sender.bounds.width * scaleFactor              //Goes to the other end multiplied by the content scale factor
+        var data: (xValues: [CGFloat?], yValues: [CGFloat?]) = ([], [])        //Start nil'd
         
-        pixelXMax = GraphViewOutlet.bounds.width * GraphViewOutlet.contentScaleFactor //Goes to the other end multiplied by the content scale factor
+        numericX -= originXPixels / (pPU * scaleFactor)  //Start at the most negative point
         
-        numericX -= origin.x * GraphViewOutlet.pointsPerUnit  //Start at the most negative point
-        
-        let bumpXBy = 1 / (GraphViewOutlet.pointsPerUnit * GraphViewOutlet.contentScaleFactor) //converting pixels to real numbers
+        let bumpXBy = 1 / (pPU * scaleFactor) //converting pixels to real numbers
         
         while pixelX < pixelXMax {
-            let yValue = CGFloat(function(Double(numericX)))
-            if yValue.isNormal || yValue.isZero {
-                let pixelY = origin.y + (yValue * GraphViewOutlet.pointsPerUnit * GraphViewOutlet.contentScaleFactor)
-                data.append(pixelY)
-            } else {
-                data.append(nil)
+            if let doubValue = RunFunction(functionString, value: Double(numericX)) {
+                let yValue = CGFloat(doubValue)
+                if yValue.isNormal || yValue.isZero {
+                    let pixelY = originYPixels - (yValue * pPU * scaleFactor)
+                    data.xValues.append(pixelX)
+                    data.yValues.append(pixelY)
+                } else {
+                    data.xValues.append(nil)
+                    data.yValues.append(nil)
+                }
             }
             pixelX++
             numericX += bumpXBy
-            
         }
-        
-        numericData = data
-        
-        
-        
-    }
-    
-    func pointsForGraphView(sender: GraphView) -> ([CGFloat?]) {
-        return numericData
-    }
-    
-    
-    func updateUI() {
-        GraphViewOutlet.setNeedsDisplay()     //This will tell the screen to redraw
+        return data
+
     }
 }

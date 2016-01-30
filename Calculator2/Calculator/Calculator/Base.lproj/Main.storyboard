@@ -358,17 +358,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ROr-0s-Ezy" customClass="GraphView" customModule="Calculator" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="600" height="572"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ROr-0s-Ezy" firstAttribute="bottom" secondItem="gFG-m1-QLF" secondAttribute="top" id="5xj-nb-dJi"/>
-                            <constraint firstAttribute="trailing" secondItem="ROr-0s-Ezy" secondAttribute="trailing" id="Vhb-KO-rpF"/>
-                            <constraint firstItem="ROr-0s-Ezy" firstAttribute="top" secondItem="PE1-mH-Fj3" secondAttribute="bottom" constant="8" symbolic="YES" id="a54-2z-xBu"/>
-                            <constraint firstItem="ROr-0s-Ezy" firstAttribute="leading" secondItem="VVe-lZ-PaH" secondAttribute="leading" id="tBd-tD-YV2"/>
+                            <constraint firstItem="ROr-0s-Ezy" firstAttribute="bottom" secondItem="gFG-m1-QLF" secondAttribute="top" id="6NM-Fy-mVK"/>
+                            <constraint firstItem="ROr-0s-Ezy" firstAttribute="leading" secondItem="VVe-lZ-PaH" secondAttribute="leading" id="I4M-ii-UnA"/>
+                            <constraint firstAttribute="trailing" secondItem="ROr-0s-Ezy" secondAttribute="trailing" id="Jra-xH-Vyb"/>
+                            <constraint firstItem="ROr-0s-Ezy" firstAttribute="top" secondItem="PE1-mH-Fj3" secondAttribute="bottom" id="b4B-df-vAl"/>
                         </constraints>
                     </view>
                     <connections>
@@ -377,7 +377,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Anp-Bd-fUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="448" y="793"/>
+            <point key="canvasLocation" x="784" y="791"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="seo-H0-ZKz">
@@ -412,6 +412,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ZZS-oK-djZ"/>
+        <segue reference="UNW-j0-xNt"/>
     </inferredMetricsTieBreakers>
 </document>

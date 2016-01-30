@@ -9,7 +9,7 @@
 import UIKit
 
 protocol GraphViewDataSource: class {
-    func pointsForGraphView(sender: GraphView) -> ([CGFloat?])
+    func pointsForGraphView(sender: GraphView) -> (xValues: [CGFloat?], yValues: [CGFloat?])
 }
 
 @IBDesignable
@@ -24,7 +24,7 @@ class GraphView: UIView {
     
     var color:UIColor = UIColor.orangeColor() { didSet { setNeedsDisplay() } }
     
-    var axesOrigin: CGPoint = CGPointMake(CGFloat(0.0), CGFloat(0.0)) {
+    var axesOrigin: CGPoint = CGPointMake(CGFloat(0.0), CGFloat(0.0)) {     //This is in points, not pixels
         didSet {
             setNeedsDisplay()
         }
@@ -36,11 +36,10 @@ class GraphView: UIView {
         }
     }
     
+    
     private enum Constants {
         static let translationFactor: CGFloat = 2
     }
-    
-    //I need some kind of init here to set origin and bounds, otherwise I can't get the right values into the view controller.
     
     
     func zoom(gesture: UIPinchGestureRecognizer){
@@ -70,24 +69,24 @@ class GraphView: UIView {
         }
     }
     
-    func createCurveBezier(yVals: ([CGFloat?])) -> UIBezierPath {
+    func createCurveBezier(xVals: [CGFloat?], yVals: [CGFloat?]) -> UIBezierPath {
         let curvePath = UIBezierPath()
         var lastGood = false
         
         var xPixel:CGFloat = 0
         
-        for y in yVals{
+        for y in yVals{                                             
             if lastGood == false {  //The previous point was bad
                 if y != nil {       //This point is good
                     lastGood = true //Set this for the next loop
-                    let point = CGPointMake(xPixel, y!)
+                    let point = CGPointMake(xPixel/self.contentScaleFactor, y!/self.contentScaleFactor)
                     curvePath.moveToPoint(point)
                 }    //otherwise, do nothing, just keep moving across x's
             } else {        //the previous point was good
                 if y != nil     //This point is good
                 {
                     lastGood = true
-                    let point = CGPointMake(xPixel, y!)
+                    let point = CGPointMake(xPixel/self.contentScaleFactor, y!/self.contentScaleFactor)
                     curvePath.addLineToPoint(point)     //Draw from where we were to here
                     curvePath.moveToPoint(point)        //Move to the new spot
                 } else
@@ -126,8 +125,8 @@ class GraphView: UIView {
         
         
         axes.drawAxesInRect(axesBounds, origin: axesOrigin, pointsPerUnit: pointsPerUnit)       //This will draw a blank graph
-        let yValues = dataSource?.pointsForGraphView(self) ?? [nil]          //Grab data
-        let bezPath = createCurveBezier(yValues)    //Create the path
+        let (xValues, yValues) = dataSource?.pointsForGraphView(self) ?? ([nil], [nil])          //Grab data
+        let bezPath = createCurveBezier(xValues, yVals: yValues)    //Create the path
         bezPath.stroke()    //Draw!
     }
 }
