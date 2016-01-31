@@ -20,19 +20,9 @@ class CalculatorGraphViewController: UIViewController, GraphViewDataSource {
     }
     
 
-    var functionString = ""
+    let brain = CalculatorBrain()       //Create an instance of the CalcBrain Class to handle the math
     
-    func RunFunction (operation: String, value: Double) -> Double?{        //Takes in the string of the function. If recognized, runs the function, else returns nil
-        switch operation {
-        case "sin":
-            return sin(value)
-        case "cos":
-            return cos(value)
-        case "√":
-            return sqrt(value)
-        default: return nil
-        }
-    }
+    var functionString = ""
     
     func pointsForGraphView(sender: GraphView) -> (xValues: [CGFloat?], yValues: [CGFloat?]) {   //This is the model. It runs the function over the range of x's and returns the x and y values in pixels for graphing
         let origin = sender.axesOrigin
@@ -50,9 +40,10 @@ class CalculatorGraphViewController: UIViewController, GraphViewDataSource {
         let bumpXBy = 1 / (pPU * scaleFactor) //converting pixels to real numbers
         
         while pixelX < pixelXMax {
-            if let doubValue = RunFunction(functionString, value: Double(numericX)) {
+            brain.pushOperand(Double(numericX))     //Add the numberic value of X to the stack
+            if let doubValue = brain.performOperation(functionString) { //Use the CalcBrain to evalauate the function
                 let yValue = CGFloat(doubValue)
-                if yValue.isNormal || yValue.isZero {
+                if (yValue.isNormal || yValue.isZero) && yValue != numericX {       //Cludgy && to protect against initial case where there is no operation
                     let pixelY = originYPixels - (yValue * pPU * scaleFactor)
                     data.xValues.append(pixelX)
                     data.yValues.append(pixelY)
@@ -63,6 +54,7 @@ class CalculatorGraphViewController: UIViewController, GraphViewDataSource {
             }
             pixelX++
             numericX += bumpXBy
+            brain.clearStack()      //Empty out the stack so that it's ready for the next run
         }
         updateUI()
         return data
