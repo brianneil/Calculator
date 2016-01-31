@@ -18,7 +18,13 @@ class CalculatorViewController: UIViewController
     var brain = CalculatorBrain()
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let CGVC = segue.destinationViewController as? CalculatorGraphViewController {        //First check that we are in fact headed to a CalculatorViewController
+        var destination = segue.destinationViewController as? UIViewController
+        if let navCon = destination as? UINavigationController
+        {
+            destination = navCon.visibleViewController
+        }
+        
+        if let CGVC = destination as? CalculatorGraphViewController {        //First check that we are in fact headed to a CalculatorViewController
             if let identifier = segue.identifier {                                          //Run a switch on what triggered the segue and react appropriately
                 switch identifier {
                 case "MakeGraph":

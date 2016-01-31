@@ -219,7 +219,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="∿"/>
                                 <connections>
-                                    <segue destination="Tns-h6-GgI" kind="showDetail" identifier="MakeGraph" id="ZZS-oK-djZ"/>
+                                    <segue destination="tCQ-zq-aiu" kind="showDetail" identifier="MakeGraph" id="laE-0G-6Gj"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -357,7 +357,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ROr-0s-Ezy" customClass="GraphView" customModule="Calculator" customModuleProvider="target">
+                            <view contentMode="redraw" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ROr-0s-Ezy" customClass="GraphView" customModule="Calculator" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
@@ -371,13 +371,14 @@
                             <constraint firstItem="ROr-0s-Ezy" firstAttribute="top" secondItem="PE1-mH-Fj3" secondAttribute="bottom" id="b4B-df-vAl"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="29k-pv-wxc"/>
                     <connections>
                         <outlet property="GraphViewOutlet" destination="ROr-0s-Ezy" id="eqT-rv-U3E"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Anp-Bd-fUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="784" y="791"/>
+            <point key="canvasLocation" x="1343" y="786"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="seo-H0-ZKz">
@@ -385,7 +386,6 @@
                 <splitViewController id="kWp-Gc-37U" sceneMemberID="viewController">
                     <connections>
                         <segue destination="4QD-BZ-6W6" kind="relationship" relationship="masterViewController" id="PY6-eo-gcL"/>
-                        <segue destination="Tns-h6-GgI" kind="relationship" relationship="detailViewController" id="UNW-j0-xNt"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Gn-62-Lvu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -410,8 +410,23 @@
             </objects>
             <point key="canvasLocation" x="443" y="34"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bkX-Cm-N8y">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tCQ-zq-aiu" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="seJ-PD-pzP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Tns-h6-GgI" kind="relationship" relationship="rootViewController" id="CCH-6d-2SA"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xha-I3-nYb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="531" y="786"/>
+        </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="UNW-j0-xNt"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -64,7 +64,13 @@ class CalculatorGraphViewController: UIViewController, GraphViewDataSource {
             pixelX++
             numericX += bumpXBy
         }
+        updateUI()
         return data
 
+    }
+    
+    func updateUI() {
+        GraphViewOutlet?.setNeedsDisplay()
+        title = functionString + "(M)"
     }
 }
